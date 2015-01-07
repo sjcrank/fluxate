@@ -1,0 +1,24 @@
+{
+  "name": "fluxate",
+  "version": "1.0.0",
+  "description": "Lightweight application architecture library for ReactJS, inspired by Flux",
+  "main": "fluxate.js",
+  "scripts": {
+    "test": "mocha tests.js",
+    "build": "uglifyjs fluxate.js -c warnings=false -m --source-map fluxate.js.map -o fluxate.min.js"
+  },
+  "keywords": [
+    "react",
+    "flux"
+  ],
+  "author": "Samuel Crank <sjcrank@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/sjcrank/fluxate.git"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "uglify-js": "^2.4.16"
+  }
+}
