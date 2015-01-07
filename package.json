@@ -1,6 +1,6 @@
 {
   "name": "fluxate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight application architecture library for ReactJS, inspired by Flux",
   "main": "fluxate.js",
   "scripts": {
