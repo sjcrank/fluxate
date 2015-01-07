@@ -7,6 +7,10 @@ Fluxate is available on npm
 
     npm install fluxate
 
+Fluxate is available on bower
+
+    bower install fluxate
+    
 ## Browser Compatibility
 
 Fluxate is compatible with any [ES5-compliant browser](http://kangax.github.io/compat-table/es5/). You can use [es5-shim](https://github.com/es-shims/es5-shim) for other browsers.
