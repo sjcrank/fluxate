@@ -1,0 +1,26 @@
+{
+  "name": "fluxate",
+  "description": "Lightweight application architecture library for ReactJS, inspired by Flux",
+  "main": "fluxate.js",
+  "homepage": "https://github.com/sjcrank/fluxate",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "npm-debug.log",
+    "node_modules",
+    "package.json",
+    "*.md",
+    "tests.js"
+  ],
+  "keywords": [
+    "react",
+    "flux"
+  ],
+  "authors": [
+    "Samuel Crank <sjcrank@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/sjcrank/fluxate.git"
+  }
+}

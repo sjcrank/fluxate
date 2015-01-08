@@ -46,7 +46,7 @@ var fluxate = {
                 options = options || {};
                 if(!options.name) throw 'Property name was not supplied';
                 var handlers = options.preCommitHandlers ? options.preCommitHandlers : [];
-                var value = options.initValue ? options.initValue : null;
+                var value = 'initValue' in options ? options.initValue : null;
 
                 this[options.name] = function() {
                     if(arguments.length === 0) {

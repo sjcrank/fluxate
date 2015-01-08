@@ -137,7 +137,7 @@ describe('createStore', function() {
         store.addProp({ name: 'hello' });
         assert.equal(null, store.hello());
     });
-    it('should accept the standard falsy values for a property', function() {
+    it('should accept falsy values for a property', function() {
         store.addProp({ name: 'hello', initValue: 12 });
         store.hello(null);
         assert.equal(null, store.hello());
@@ -153,6 +153,22 @@ describe('createStore', function() {
         assert.ok(isNaN(store.hello()));
         store.hello(0);
         assert.equal(0, store.hello());
+    });
+    it('should accept falsy values as initial value for a property', function() {
+        store.addProp({ name: 'prop1', initValue: null });
+        assert.equal(null, store.prop1());
+        store.addProp({ name: 'prop2', initValue: undefined });
+        assert.equal(null, store.prop2());
+        store.addProp({ name: 'prop3', initValue: '' });
+        assert.equal('', store.prop3());
+        store.addProp({ name: 'prop4', initValue: {} });
+        assert.deepEqual({}, store.prop4());
+        store.addProp({ name: 'prop5', initValue: false });
+        assert.equal(false, store.prop5());
+        store.addProp({ name: 'prop6', initValue: NaN });
+        assert.ok(isNaN(store.prop6()));
+        store.addProp({ name: 'prop7', initValue: 0 });
+        assert.equal(0, store.prop7());
     });
     it('should support multiple independent properties', function() {
         store.addProp({ name: 'hello', initValue: 12 });
