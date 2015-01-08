@@ -53,7 +53,7 @@ tableOptions.addProp({
     preCommitHandlers: [
         function(oldValue, newValue) {
             console.log('changing searchText: ' + oldValue + ' -> ' + newValue);
-            if(newValue.length > 100) return false;
+            if(newValue.length > 100) return 'halt';
         }
     ]
 });
@@ -146,7 +146,7 @@ var updateMaxRowsAction = fluxate.createAction({
     preExecHandlers: [
         function(newValue) {
             console.log('request to update max rows to: ' + newValue);
-            if(newValue !== parseInt(newValue, 10) || newValue <= 0) return false;
+            if(newValue !== parseInt(newValue, 10) || newValue <= 0) return true;
         }
     ]
 });
