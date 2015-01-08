@@ -45,7 +45,7 @@ tableOptions.sortBy('customer');
 tableOptions.offChange(changeListener);
 ```
 
-Properties may have one or more preCommitHandlers which are functions to be called prior to committing a new value for the property. The handler will be provided the old and new values and is expected to return true if the commit may proceed or false if it should be rejected.
+Properties may have one or more preCommitHandlers which are functions to be called prior to committing a new value for the property. The handler will be provided the old and new values and is expected to return a truthy value if the commit should be cancelled.
 ```javascript
 tableOptions.addProp({
     name: 'searchText',
@@ -54,7 +54,6 @@ tableOptions.addProp({
         function(oldValue, newValue) {
             console.log('changing searchText: ' + oldValue + ' -> ' + newValue);
             if(newValue.length > 100) return false;
-            return true;
         }
     ]
 });
@@ -138,7 +137,7 @@ var loadDataAction = fluxate.createAction({
 });
 ```
 
-Actions may have one or more preExecHandlers which are functions to be called prior to executing the Action. Each handler will be provided the arguments that are supplied to the Action and is expected to return true if the Action may proceed or false if it should be canceled.
+Actions may have one or more preExecHandlers which are functions to be called prior to executing the Action. Each handler will be provided the arguments that are supplied to the Action and is expected to return a truthy value if the Action should be cancelled.
 
 ```javascript
 var updateMaxRowsAction = fluxate.createAction({
@@ -148,7 +147,6 @@ var updateMaxRowsAction = fluxate.createAction({
         function(newValue) {
             console.log('request to update max rows to: ' + newValue);
             if(newValue !== parseInt(newValue, 10) || newValue <= 0) return false;
-            return true;
         }
     ]
 });

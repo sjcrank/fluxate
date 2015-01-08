@@ -2,14 +2,18 @@ var fluxate = {
 
     createAction: function(options) {
         options = options || {};
+        var supportedOptions = [ 'name', 'exec', 'preExecHandlers' ];
+        for(option in options) {
+            if(supportedOptions.indexOf(option) < 0) throw 'Unsupported option: ' + option;
+        }
         var handlers = options.preExecHandlers ? options.preExecHandlers : [];
 
         return {
             name: options.name ? options.name.toString() : 'unnamed',
             exec: function() {
                 for(var i = 0; i < handlers.length; i++) {
-                    var result = handlers[i].apply(this, arguments);
-                    if(!result) return;
+                    var shouldHalt = handlers[i].apply(this, arguments);
+                    if(shouldHalt) return;
                 }
                 if(options.exec) options.exec.apply(this, arguments);
             }
@@ -45,6 +49,10 @@ var fluxate = {
             addProp: function(options) {
                 options = options || {};
                 if(!options.name) throw 'Property name was not supplied';
+                var supportedOptions = [ 'name', 'initValue', 'preCommitHandlers' ];
+                for(option in options) {
+                    if(supportedOptions.indexOf(option) < 0) throw 'Unsupported option: ' + option;
+                }
                 var handlers = options.preCommitHandlers ? options.preCommitHandlers : [];
                 var value = 'initValue' in options ? options.initValue : null;
 
@@ -54,8 +62,8 @@ var fluxate = {
                     } else {
                         if(notifying) throw 'Changing a property while notifying';
                         for(var i = 0; i < handlers.length; i++) {
-                            var result = handlers[i].call(this, value, arguments[0]);
-                            if(!result) return;
+                            var shouldHalt = handlers[i].call(this, value, arguments[0]);
+                            if(shouldHalt) return;
                         }
                         value = arguments[0];
                         notifyHandlers();

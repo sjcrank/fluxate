@@ -21,6 +21,14 @@ describe('createAction', function() {
         var action = fluxate.createAction({ name: "theName"});
         assert.equal('theName', action.name);
     });
+    it('should throw an error if unrecognized option is provided', function() {
+        assert.throws(function() {
+            var action = fluxate.createAction({
+                name: "theName",
+                execute: function() {}
+            });
+        });
+    });
     it('should create action that calls the supplied exec function', function() {
         var isCalled = false;
         var action = fluxate.createAction({
@@ -55,19 +63,17 @@ describe('createAction', function() {
                 function() {
                     assert.equal(0, idx);
                     idx++;
-                    return true;
                 },
                 function() {
                     assert.equal(1, idx);
                     idx++;
-                    return true;
                 }
             ]
         });
         action.exec();
+        assert.equal(3, idx);
     });
-    it('should stop if a preExecHandler returns false', function() {
-        var idx = 0;
+    it('should stop if a preExecHandler returns truthy value', function() {
         var action = fluxate.createAction({
             name: "theName",
             exec: function() {
@@ -75,11 +81,10 @@ describe('createAction', function() {
             },
             preExecHandlers: [
                 function() {
-                    return false;
+                    return true;
                 },
                 function() {
                     assert.fail('called handler', 'did not call handler', '', '!=');
-                    return true;
                 }
             ]
         });
@@ -98,7 +103,6 @@ describe('createAction', function() {
                     assert.equal(2, arguments.length);
                     assert.equal('a', arguments[0]);
                     assert.equal(1, arguments[1]);
-                    return true;
                 }
             ]
         });
@@ -125,6 +129,11 @@ describe('createStore', function() {
     it('should throw an error if name is missing', function() {
         assert.throws(function() {
             store.addProp({ initValue: 12 });
+        });
+    });
+    it('should throw an error if unrecognized option is provided', function() {
+        assert.throws(function() {
+            store.addProp({ name: 'hello', init: 12 });
         });
     });
     it('should create a property with supplied name and initial value', function() {
@@ -233,6 +242,7 @@ describe('createStore', function() {
         var idx = 0;
         store.onChange(function() {
             assert.equal(2, idx);
+            idx++;
         });
         store.addProp({
             name: 'hello',
@@ -241,19 +251,17 @@ describe('createStore', function() {
                 function() {
                     assert.equal(0, idx);
                     idx++;
-                    return true;
                 },
                 function() {
                     assert.equal(1, idx);
                     idx++;
-                    return true;
                 }
             ]
         });
         store.hello(8);
+        assert.equal(3, idx);
     });
-    it('should stop if a preCommitHandler returns false', function() {
-        var idx = 0;
+    it('should stop if a preCommitHandler returns a truthy value', function() {
         store.onChange(function() {
             assert.fail('called change handler', 'did not call change handler', '', '!=');
         });
@@ -262,11 +270,10 @@ describe('createStore', function() {
             initValue: 12,
             preCommitHandlers: [
                 function() {
-                    return false;
+                    return true;
                 },
                 function() {
                     assert.fail('called handler', 'did not call handler', '', '!=');
-                    return true;
                 }
             ]
         });
@@ -282,7 +289,6 @@ describe('createStore', function() {
                     assert.equal(2, arguments.length);
                     assert.equal(12, arguments[0]);
                     assert.equal(8, arguments[1]);
-                    return true;
                 }
             ]
         });
