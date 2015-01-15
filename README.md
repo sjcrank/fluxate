@@ -1,5 +1,5 @@
 # Fluxate
-Lightweight application architecture library for ReactJS, inspired by Flux
+Lightweight application architecture library for ReactJS, inspired by Flux.
 
 ## Installation
 
