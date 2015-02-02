@@ -211,23 +211,38 @@ describe('createStore', function() {
         assert.equal(2, idx1);
         assert.equal(3, idx2);
     });
-    it('should throw error if adding change handlers while committing', function() {
+    if('should not call new change handler while committing', function() {
+        var handler1Called = false;
+        var handler1 = function() {
+            handler1Called = true;
+            store.onChange(handler2);
+        };
+        var handler2Called = false;
+        var handler2 = function() {
+            handler2Called = true;
+        }
         store.addProp({ name: 'hello', initValue: 12 });
-        store.onChange(function() {
-            store.onChange(function() {});
-        });
-        assert.throws(function() {
-            store.hello(4);
-        });
+        store.onChange(handler1);
+        store.hello(4);
+        assert.equal(true, handler1Called);
+        assert.equal(false, handler2Called);
     });
-    it('should throw error if removing change handlers while committing', function() {
+    if('should call removed change handler while committing', function() {
+        var handler1Called = false;
+        var handler1 = function() {
+            handler1Called = true;
+            store.offChange(handler2);
+        };
+        var handler2Called = false;
+        var handler2 = function() {
+            handler2Called = true;
+        }
         store.addProp({ name: 'hello', initValue: 12 });
-        store.onChange(function() {
-            store.offChange(function() {});
-        });
-        assert.throws(function() {
-            store.hello(4);
-        });
+        store.onChange(handler1);
+        store.onChange(handler2);
+        store.hello(4);
+        assert.equal(true, handler1Called);
+        assert.equal(true, handler2Called);
     });
     it('should throw error if changing property value while committing', function() {
         store.addProp({ name: 'hello', initValue: 12 });
@@ -236,7 +251,7 @@ describe('createStore', function() {
         });
         assert.throws(function() {
             store.hello(4);
-        });
+        }, /Maximum call stack size exceeded/);
     });
     it('should call preCommitHandlers in order, prior to committing', function() {
         var idx = 0;

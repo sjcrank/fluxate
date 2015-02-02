@@ -22,23 +22,18 @@ var fluxate = {
 
     createStore: function() {
         var listeners = [];
-        var notifying = false;
 
         var notifyHandlers = function() {
-            notifying = true;
-            listeners.forEach(function(listener) {
+            listeners.slice().forEach(function(listener) {
                 listener.fn.apply(listener.context);
             });
-            notifying = false;
         };
 
         return {
             onChange: function(listener, context) {
-                if(notifying) throw 'Adding a change listener while notifying';
                 listeners.push({ fn: listener, context: context || this });
             },
             offChange: function(listener) {
-                if(notifying) throw 'Removing a change listener while notifying';
                 for(var i = 0; i < listeners.length; i++) {
                     if(listeners[i].fn === listener) {
                         listeners.splice(i, 1);
@@ -60,7 +55,6 @@ var fluxate = {
                     if(arguments.length === 0) {
                         return value;
                     } else {
-                        if(notifying) throw 'Changing a property while notifying';
                         for(var i = 0; i < handlers.length; i++) {
                             var shouldHalt = handlers[i].call(this, value, arguments[0]);
                             if(shouldHalt) return;
